@@ -15,11 +15,10 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; position: relative; }
 
 body {
   margin: 0;
-  position: relative;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   color: var(--text);
   background: var(--bg);
@@ -27,11 +26,20 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ====== Scrolling Gradient Background ====== */
-body::before {
+/* ====== Scrolling Gradient Background (robust) ======
+   This scrolls because it is a normal element in the document flow (absolute to html),
+   not treated like the special root background painting. */
+html::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  /* Controls how far down the glow exists.
+     Increase if you want it to persist longer during scroll. */
+  height: 1100px;
+
   z-index: -1;
   pointer-events: none;
 
@@ -43,10 +51,7 @@ body::before {
 }
 
 a { color: inherit; }
-
-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 
 .container {
   width: min(var(--max), calc(100% - 2rem));
@@ -95,17 +100,12 @@ code {
   letter-spacing: 0.2px;
 }
 
-.nav {
-  display: flex;
-  gap: 1.1rem;
-}
-
+.nav { display: flex; gap: 1.1rem; }
 .nav a {
   text-decoration: none;
   color: var(--muted);
   font-size: 0.95rem;
 }
-
 .nav a:hover { color: var(--text); }
 
 .nav-toggle {
@@ -117,7 +117,6 @@ code {
   background: var(--panel);
   cursor: pointer;
 }
-
 .nav-toggle span {
   display: block;
   height: 2px;
@@ -128,15 +127,11 @@ code {
 }
 
 /* Mobile nav hidden by default */
-.nav-mobile {
-  display: none;
-  padding: 0 0 1rem 0;
-}
+.nav-mobile { display: none; padding: 0 0 1rem 0; }
 
-/* Show mobile nav when toggle is open */
-.nav-toggle[aria-expanded="true"] + .nav-mobile {
-  display: block;
-}
+/* Show mobile nav ONLY when toggle is open
+   Assumes: <button class="nav-toggle"> immediately followed by <nav class="nav-mobile"> */
+.nav-toggle[aria-expanded="true"] + .nav-mobile { display: block; }
 
 .nav-mobile a {
   display: block;
@@ -145,15 +140,12 @@ code {
   color: var(--muted);
   border-top: 1px solid var(--border);
 }
-
 .nav-mobile a:hover { color: var(--text); }
 
 /* ====== Hero ====== */
 .main { padding-bottom: 3rem; }
 
-.hero {
-  padding: 4.5rem 0 2rem 0;
-}
+.hero { padding: 4.5rem 0 2rem 0; }
 
 .hero-inner {
   display: grid;
@@ -216,163 +208,7 @@ code {
   gap: 0.5rem;
   transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
 }
-
 .button:hover { background: var(--panel-2); }
 .button:active { transform: translateY(1px); }
 
-.button.primary {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.button:focus-visible,
-.link-card:focus-visible {
-  border-color: rgba(134, 151, 255, 0.65);
-}
-
-.micro {
-  min-height: 1.2em;
-  margin: 0.75rem 0 0 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-/* ====== Cards ====== */
-.hero-card .card,
-.tile,
-.link-card {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-}
-
-.card-top {
-  display: flex;
-  gap: 0.35rem;
-  padding: 0.75rem 0.9rem;
-  border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.22);
-}
-
-.card-body { padding: 1.1rem; }
-
-.card-label {
-  margin: 0 0 0.7rem 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.card-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-top: 1px solid var(--border);
-}
-
-.card-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.card-note {
-  margin: 0.85rem 0 0 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-/* ====== Sections ====== */
-.section { padding: 3.25rem 0; }
-
-.section h2 {
-  margin: 0 0 0.9rem 0;
-  font-size: 1.55rem;
-  letter-spacing: -0.01em;
-}
-
-.section p {
-  margin: 0 0 1.25rem 0;
-  color: var(--muted);
-  max-width: 70ch;
-  line-height: 1.75;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 1.1rem;
-}
-
-.links { grid-template-columns: repeat(3, 1fr); }
-
-.link-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.1rem;
-  text-decoration: none;
-  transition: transform 0.08s ease, background 0.12s ease;
-}
-
-.link-card:hover { background: rgba(255,255,255,0.08); }
-.link-card:active { transform: translateY(1px); }
-
-.arrow { color: rgba(255,255,255,0.55); font-size: 1.2rem; }
-
-.inline { text-decoration: underline; text-underline-offset: 3px; }
-
-.contact-row {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-top: 0.6rem;
-}
-
-.fine { font-size: 0.95rem; }
-.muted { color: var(--muted); }
-
-/* ====== Footer ====== */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 1.4rem 0;
-  background: rgba(0,0,0,0.12);
-}
-
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* ====== Responsive ====== */
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero { padding-top: 3.6rem; }
-}
-
-@media (max-width: 760px) {
-  .nav { display: none; }
-  .nav-toggle { display: inline-block; }
-  .grid,
-  .links { grid-template-columns: 1fr; }
-}
-
-/* ====== Reduced Motion ====== */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto !important; }
-  .button, .link-card { transition: none !important; }
-}
+.button.primary
