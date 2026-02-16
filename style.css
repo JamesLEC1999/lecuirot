@@ -10,26 +10,43 @@
   --radius: 18px;
   --radius-sm: 12px;
   --max: 1040px;
-
-  /* New: focus color */
   --focus: rgba(134, 151, 255, 0.9);
 }
 
 * { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
+
 body {
   margin: 0;
+  position: relative;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   color: var(--text);
-  background: radial-gradient(1200px 700px at 10% 0%, rgba(120, 132, 255, 0.18), transparent 60%),
-              radial-gradient(900px 600px at 90% 20%, rgba(255, 120, 220, 0.14), transparent 55%),
-              var(--bg);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* ====== Scrolling Gradient Background ====== */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(1200px 700px at 10% 0%, rgba(120, 132, 255, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(255, 120, 220, 0.14), transparent 55%);
+
+  background-repeat: no-repeat;
+}
+
 a { color: inherit; }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 
 .container {
   width: min(var(--max), calc(100% - 2rem));
@@ -49,7 +66,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 }
 .skip-link:focus { left: 1rem; top: 1rem; }
 
-/* Strong visible keyboard focus */
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
@@ -83,11 +99,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   display: flex;
   gap: 1.1rem;
 }
+
 .nav a {
   text-decoration: none;
   color: var(--muted);
   font-size: 0.95rem;
 }
+
 .nav a:hover { color: var(--text); }
 
 .nav-toggle {
@@ -99,6 +117,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   background: var(--panel);
   cursor: pointer;
 }
+
 .nav-toggle span {
   display: block;
   height: 2px;
@@ -108,14 +127,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   border-radius: 99px;
 }
 
-/* Mobile nav: default hidden */
+/* Mobile nav hidden by default */
 .nav-mobile {
   display: none;
   padding: 0 0 1rem 0;
 }
 
-/* Show mobile nav ONLY when toggle is open
-   Assumes: .nav-toggle immediately precedes .nav-mobile in DOM */
+/* Show mobile nav when toggle is open */
 .nav-toggle[aria-expanded="true"] + .nav-mobile {
   display: block;
 }
@@ -123,18 +141,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 .nav-mobile a {
   display: block;
   text-decoration: none;
-  padding: 0.95rem 0.25rem;
+  padding: 1rem 0.25rem;
   color: var(--muted);
   border-top: 1px solid var(--border);
 }
-.nav-mobile a:hover { color: var(--text); }
 
-/* Focus border polish */
-.nav a:focus-visible,
-.nav-mobile a:focus-visible,
-.brand:focus-visible {
-  border-radius: 10px;
-}
+.nav-mobile a:hover { color: var(--text); }
 
 /* ====== Hero ====== */
 .main { padding-bottom: 3rem; }
@@ -176,7 +188,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   margin: 0 0 1.4rem 0;
   color: var(--muted);
   font-size: 1.05rem;
-  line-height: 1.7;
+  line-height: 1.75;
   max-width: 60ch;
 }
 
@@ -192,7 +204,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   border: 1px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  padding: 0.78rem 1rem;
+  padding: 0.85rem 1.05rem;
   border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
@@ -213,7 +225,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* Focus styling for buttons/interactive cards */
 .button:focus-visible,
 .link-card:focus-visible {
   border-color: rgba(134, 151, 255, 0.65);
@@ -226,13 +237,14 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   font-size: 0.95rem;
 }
 
-/* ====== Right card ====== */
-.hero-card .card {
+/* ====== Cards ====== */
+.hero-card .card,
+.tile,
+.link-card {
   border: 1px solid var(--border);
   background: var(--panel);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  overflow: hidden;
   backdrop-filter: blur(10px);
 }
 
@@ -243,6 +255,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   border-bottom: 1px solid var(--border);
   background: rgba(255,255,255,0.04);
 }
+
 .dot {
   width: 10px;
   height: 10px;
@@ -250,7 +263,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   background: rgba(255,255,255,0.22);
 }
 
-.card-body { padding: 1.1rem 1.1rem 1.2rem 1.1rem; }
+.card-body { padding: 1.1rem; }
+
 .card-label {
   margin: 0 0 0.7rem 0;
   color: var(--muted);
@@ -263,15 +277,14 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   margin: 0;
   border-top: 1px solid var(--border);
 }
+
 .card-list li {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--border);
-  color: rgba(255,255,255,0.86);
 }
-.card-list li span:first-child { color: var(--muted); }
 
 .card-note {
   margin: 0.85rem 0 0 0;
@@ -280,9 +293,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 }
 
 /* ====== Sections ====== */
-.section {
-  padding: 3.25rem 0;
-}
+.section { padding: 3.25rem 0; }
 
 .section h2 {
   margin: 0 0 0.9rem 0;
@@ -304,19 +315,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   margin-top: 1.1rem;
 }
 
-.tile {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: var(--radius);
-  padding: 1.1rem;
-  backdrop-filter: blur(10px);
-}
-.tile h3 {
-  margin: 0 0 0.4rem 0;
-  font-size: 1.05rem;
-}
-.tile p { margin: 0; color: var(--muted); }
-
 .links { grid-template-columns: repeat(3, 1fr); }
 
 .link-card {
@@ -325,13 +323,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   align-items: center;
   gap: 1rem;
   padding: 1.1rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--panel);
-  backdrop-filter: blur(10px);
   text-decoration: none;
-  transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
+  transition: transform 0.08s ease, background 0.12s ease;
 }
+
 .link-card:hover { background: rgba(255,255,255,0.08); }
 .link-card:active { transform: translateY(1px); }
 
@@ -355,6 +350,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   padding: 1.4rem 0;
   background: rgba(0,0,0,0.12);
 }
+
 .footer-inner {
   display: flex;
   justify-content: space-between;
@@ -371,15 +367,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 @media (max-width: 760px) {
   .nav { display: none; }
   .nav-toggle { display: inline-block; }
-  .grid { grid-template-columns: 1fr; }
+  .grid,
   .links { grid-template-columns: 1fr; }
-
-  /* Slightly bigger tap targets on mobile */
-  .nav-mobile a { padding: 1rem 0.25rem; }
-  .button { padding: 0.9rem 1.05rem; }
 }
 
-/* ====== Reduced motion ====== */
+/* ====== Reduced Motion ====== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
   .button, .link-card { transition: none !important; }
