@@ -10,6 +10,9 @@
   --radius: 18px;
   --radius-sm: 12px;
   --max: 1040px;
+
+  /* New: focus color */
+  --focus: rgba(134, 151, 255, 0.9);
 }
 
 * { box-sizing: border-box; }
@@ -21,6 +24,8 @@ body {
   background: radial-gradient(1200px 700px at 10% 0%, rgba(120, 132, 255, 0.18), transparent 60%),
               radial-gradient(900px 600px at 90% 20%, rgba(255, 120, 220, 0.14), transparent 55%),
               var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a { color: inherit; }
@@ -43,6 +48,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   z-index: 999;
 }
 .skip-link:focus { left: 1rem; top: 1rem; }
+
+/* Strong visible keyboard focus */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
 
 /* ====== Header ====== */
 .header {
@@ -97,18 +108,33 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   border-radius: 99px;
 }
 
+/* Mobile nav: default hidden */
 .nav-mobile {
   display: none;
   padding: 0 0 1rem 0;
 }
+
+/* Show mobile nav ONLY when toggle is open
+   Assumes: .nav-toggle immediately precedes .nav-mobile in DOM */
+.nav-toggle[aria-expanded="true"] + .nav-mobile {
+  display: block;
+}
+
 .nav-mobile a {
   display: block;
   text-decoration: none;
-  padding: 0.85rem 0.25rem;
+  padding: 0.95rem 0.25rem;
   color: var(--muted);
   border-top: 1px solid var(--border);
 }
 .nav-mobile a:hover { color: var(--text); }
+
+/* Focus border polish */
+.nav a:focus-visible,
+.nav-mobile a:focus-visible,
+.brand:focus-visible {
+  border-radius: 10px;
+}
 
 /* ====== Hero ====== */
 .main { padding-bottom: 3rem; }
@@ -151,7 +177,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.7;
-  max-width: 55ch;
+  max-width: 60ch;
 }
 
 .cta-row {
@@ -187,6 +213,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   background: rgba(255, 255, 255, 0.12);
 }
 
+/* Focus styling for buttons/interactive cards */
+.button:focus-visible,
+.link-card:focus-visible {
+  border-color: rgba(134, 151, 255, 0.65);
+}
+
 .micro {
   min-height: 1.2em;
   margin: 0.75rem 0 0 0;
@@ -197,10 +229,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 /* ====== Right card ====== */
 .hero-card .card {
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--panel);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .card-top {
@@ -261,6 +294,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   margin: 0 0 1.25rem 0;
   color: var(--muted);
   max-width: 70ch;
+  line-height: 1.75;
 }
 
 .grid {
@@ -272,9 +306,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 
 .tile {
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--panel);
   border-radius: var(--radius);
   padding: 1.1rem;
+  backdrop-filter: blur(10px);
 }
 .tile h3 {
   margin: 0 0 0.4rem 0;
@@ -292,9 +327,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   padding: 1.1rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
   text-decoration: none;
-  transition: transform 0.08s ease, background 0.12s ease;
+  transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
 }
 .link-card:hover { background: rgba(255,255,255,0.08); }
 .link-card:active { transform: translateY(1px); }
@@ -335,7 +371,16 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 @media (max-width: 760px) {
   .nav { display: none; }
   .nav-toggle { display: inline-block; }
-  .nav-mobile { display: block; }
   .grid { grid-template-columns: 1fr; }
   .links { grid-template-columns: 1fr; }
+
+  /* Slightly bigger tap targets on mobile */
+  .nav-mobile a { padding: 1rem 0.25rem; }
+  .button { padding: 0.9rem 1.05rem; }
+}
+
+/* ====== Reduced motion ====== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .button, .link-card { transition: none !important; }
 }
