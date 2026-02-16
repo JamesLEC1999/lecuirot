@@ -1,18 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lecuirot</title>
+  <meta name="description" content="Personal landing page." />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="container">
-    <h1>Lecuirot</h1>
-    <p id="tagline">Information coming soon.</p>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <button id="cta">Click me</button>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Homepage">Lecuirot</a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#links">Links</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="container nav-mobile" data-nav-mobile hidden>
+      <a href="#about">About</a>
+      <a href="#links">Links</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main" class="main" tabindex="-1">
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="eyebrow">Personal landing page</p>
+          <h1 class="title">
+            A simple home for <span class="grad">who I am</span> and how to reach me.
+          </h1>
+          <p class="lead">
+            Replace this text with a short one-liner about you — what you do, what you care about,
+            or what you're building.
+          </p>
+
+          <div class="cta-row">
+            <a class="button primary" href="#contact">Get in touch</a>
+            <button class="button" id="copyEmailBtn" type="button">
+              Copy email
+            </button>
+          </div>
+
+          <p class="micro" id="copyStatus" aria-live="polite"></p>
+        </div>
+
+        <div class="hero-card" role="presentation" aria-hidden="true">
+          <div class="card">
+            <div class="card-top">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="card-body">
+              <p class="card-label">Quick info</p>
+              <ul class="card-list">
+                <li><span>Location</span><span>Jersey</span></li>
+                <li><span>Focus</span><span>Your focus</span></li>
+                <li><span>Status</span><span>Available / Busy</span></li>
+              </ul>
+              <p class="card-note">
+                This panel is optional — edit or remove it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <h2>About</h2>
+        <p>
+          Add a short paragraph about yourself here. Keep it human: what you do, what you’re into,
+          and what you’re working on.
+        </p>
+
+        <div class="grid">
+          <div class="tile">
+            <h3>What I do</h3>
+            <p>One sentence about your work or interests.</p>
+          </div>
+          <div class="tile">
+            <h3>What I’m building</h3>
+            <p>One sentence about current projects.</p>
+          </div>
+          <div class="tile">
+            <h3>What I’m learning</h3>
+            <p>One sentence about growth areas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="links">
+      <div class="container">
+        <h2>Links</h2>
+        <p class="muted">Add or remove cards to match your socials.</p>
+
+        <div class="grid links">
+          <a class="link-card" href="#" target="_blank" rel="noreferrer">
+            <div>
+              <h3>LinkedIn</h3>
+              <p class="muted">Professional profile</p>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+
+          <a class="link-card" href="#" target="_blank" rel="noreferrer">
+            <div>
+              <h3>GitHub</h3>
+              <p class="muted">Code and projects</p>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+
+          <a class="link-card" href="#" target="_blank" rel="noreferrer">
+            <div>
+              <h3>Blog / Notes</h3>
+              <p class="muted">Writing and ideas</p>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <h2>Contact</h2>
+        <p>
+          The easiest way to reach me:
+          <a class="inline" id="emailLink" href="mailto:you@example.com">you@example.com</a>
+        </p>
+
+        <div class="contact-row">
+          <a class="button primary" id="emailButton" href="mailto:you@example.com">Email me</a>
+          <button class="button" id="copyEmailBtn2" type="button">Copy email</button>
+        </div>
+
+        <p class="fine muted">
+          Tip: Replace <code>you@example.com</code> (in index.html and script.js) with your real email.
+        </p>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="muted">© <span id="year"></span> Lecuirot</p>
+      <a class="muted inline" href="#top">Back to top</a>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
